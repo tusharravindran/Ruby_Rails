@@ -152,8 +152,3 @@ $users.each {
   puts
 print "Final Cash Counter  #{$cash_box} ===> #{cashbox_total_amount_check}"
 puts
-
-
-
-
-
