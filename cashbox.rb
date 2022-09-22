@@ -2,6 +2,9 @@
 $cash_box = {1=>0,2=>0,5=>0,10=>0,20=>0,50=>0,100=>0,200=>0,500=>0,2000=>0}
 $users = {}
 DENOMINATIONS = [2000, 500, 200, 100, 50, 20, 10, 5, 2, 1]
+$cashbox_total_amount = 0
+$previous_total_amount = 0
+
 
 def get_cashbox_amount
     for rupee in DENOMINATIONS
@@ -10,11 +13,11 @@ def get_cashbox_amount
     end
     cashbox_total_amount_check()
     end
-$cashbox_total_amount = 0
-$previous_total_amount = 0
+
 def cashbox_total_amount_check
     $cashbox_total_amount = $cash_box.map{|key,value| key*value}.sum
 end
+
 def cashbox_balance_amount_check(balance_to_give)
     balance_amount_in_cashbox = 0
      $cash_box.map {
@@ -26,12 +29,12 @@ def cashbox_balance_amount_check(balance_to_give)
     return balance_amount_in_cashbox
   end
 
-def previous_total_amounty_check
+def previous_total_amount_check
     $previous_total_amount = $cashbox_total_amount
 end
 
 
-def denomination(balance_to_give)
+def denomnination_for_user_amount(balance_to_give)
     denomination_given_to_user = {}
     DENOMINATIONS.map do
       |denomination_element|
@@ -72,14 +75,13 @@ def billing_error
     puts "Cash Not Available in Cashbox : ",balance_to_give
   end
 
-def transaction(user_iteration)
+def complete_shopping_transaction(user_iteration)
     puts "Shopping Transaction"
     puts "Welcome User"
     puts "Enter the Product Amount : "
     product_amount = gets.to_i
     
 begin
-
     puts "Enter the Amount you given in list : "
     user_amount = gets.chomp.split(",").map(&:to_i)
     given_amount = user_amount.reduce(:+)
@@ -92,7 +94,7 @@ begin
 end
 balance_to_give = given_amount - product_amount
 
-if $cashbox_total_amount<balance_to_give
+  if $cashbox_total_amount<balance_to_give
     billing_error()
     return
   end
@@ -104,7 +106,7 @@ if $cashbox_total_amount<balance_to_give
 
 
 
-    denomination_given_to_user = denomination(balance_to_give)
+    denomination_given_to_user = denomnination_for_user_amount(balance_to_give)
 
     if denomination_given_to_user.empty? and balance_to_give.nonzero?
         billing_error()
@@ -122,14 +124,17 @@ if $cashbox_total_amount<balance_to_give
     }
     
     $users["user#{user_iteration}"].store("user_denomination",denomination_given_to_user)
-end
+    end
 puts "Balance Giving Denomination : ",denomination_given_to_user
 end
+
+
+
 puts "#{'*'*50}"
 puts "Billing Counter"
 
 get_cashbox_amount()
-previous_total_amounty_check()
+previous_total_amount_check()
 loop_iterate = 0
 loop {
     loop_iterate+=1
@@ -137,7 +142,7 @@ loop {
     user_choice = gets.chomp
     case user_choice
     when ''
-        transaction(loop_iterate)
+        complete_shopping_transaction(loop_iterate)
     when 'q'
         break
     end
