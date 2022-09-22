@@ -1,15 +1,15 @@
 
 $cash_box = {
-  1=>0,
-  2=>0,
-  5=>0,
-  10=>0,
-  20=>0,
-  50=>0,
-  100=>0,
-  200=>0,
-  500=>0,
-  2000=>0
+  1 => 0,
+  2 => 0,
+  5 => 0,
+  10 => 0,
+  20 => 0,
+  50 => 0,
+  100 => 0,
+  200 => 0,
+  500 => 0,
+  2000 => 0
 }
 $users = {}
 DENOMINATIONS = [2000, 500, 200, 100, 50, 20, 10, 5, 2, 1]
@@ -92,17 +92,17 @@ def complete_shopping_transaction(user_iteration)
     puts "Enter the Product Amount : "
     product_amount = gets.to_i
     
-begin
+  begin
     puts "Enter the Amount you given in list : "
     user_amount = gets.chomp.split(",").map(&:to_i)
     given_amount = user_amount.reduce(:+)
     
     raise unless (user_amount.uniq - DENOMINATIONS).empty?
     raise if given_amount < product_amount
-  rescue
-    puts "Please enter the valid list along with comma(,) "
+    rescue
+      puts "Please enter the valid list along with comma(,) "
     retry
-end
+  end
 balance_to_give = given_amount - product_amount
 
   if $cashbox_total_amount<balance_to_give
@@ -128,9 +128,9 @@ balance_to_give = given_amount - product_amount
           $cash_box[each_amount] += 1
       }
     $users["user#{user_iteration}"] = {
-        "product_amount"=>product_amount,
-        "given_amount"=>given_amount,
-        "balance"=>balance_to_give,
+        "product_amount" => product_amount,
+        "given_amount" => given_amount,
+        "balance" => balance_to_give,
         "user_amount" => user_amount
     }
     
